@@ -1,0 +1,24 @@
+# Ignorar o ambiente virtual local e criar um ambiente Linux na imagem.
+.venv/
+
+# Arquivos temporários e caches do Python.
+__pycache__/
+*.py[cod]
+
+# Metadados que não são necessários dentro da imagem.
+.git/
+.gitignore
+.python-version
+
+# Caches de ferramentas de desenvolvimento e testes.
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Ignorar variáveis locais com configurações ou informações sensíveis.
+.env
+
+# Artefatos gerados durante empacotamento do projeto.
+build/
+dist/
+*.egg-info/

@@ -1,0 +1,23 @@
+services:
+  reference:
+    container_name: reference-container-pybr2026
+    # Construir a imagem usando o Dockerfile desta pasta.
+    build:
+      context: .
+
+    # Executar o Chromium em modo headless, sem interface gráfica.
+    environment:
+      HEADLESS: "true"
+
+    # Montar a pasta data local no contêiner como somente leitura.
+    # Permitir a troca de dados.xlsx sem reconstruir a imagem.
+    volumes:
+      - ./data:/app/data:ro
+
+    # Usar um processo init para encaminhar sinais e encerrar corretamente os
+    # processos filhos do Chromium.
+    init: true
+
+    # Aumentar a memória compartilhada do Chromium para evitar falhas em
+    # páginas mais pesadas.
+    shm_size: 1gb
