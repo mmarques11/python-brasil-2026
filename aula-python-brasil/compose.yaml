@@ -1,0 +1,14 @@
+services:
+  aula-python-brasil:
+    container_name: aula-python-brasil
+    build:
+      context: .
+
+    environment:
+      HEADLESS: "true"
+
+    # Encaminhar sinais corretamente para os processos filhos do Chromium.
+    init: true
+
+    # Evitar falta de memória compartilhada durante a execução do Chromium.
+    shm_size: 1gb

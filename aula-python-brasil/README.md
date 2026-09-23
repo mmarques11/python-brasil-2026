@@ -65,5 +65,23 @@ Esse comando cria o ambiente virtual e instala as dependências definidas no
 `pyproject.toml`, respeitando as versões registradas no `uv.lock` quando esse
 arquivo estiver presente.
 
+Instale também o Chromium utilizado pelo Playwright:
+
+```powershell
+uv run playwright install chromium
+```
+
+## Execução com Docker
+
+Para construir a imagem e executar o projeto em um ambiente isolado:
+
+```powershell
+docker compose up --build
+```
+
+O container executa o Chromium sem interface gráfica. Sempre que o código da
+aula for alterado, execute novamente o comando com `--build` para incluir as
+mudanças na imagem.
+
 Para conhecer outras formas de instalação, consulte a
 [documentação oficial do uv](https://docs.astral.sh/uv/getting-started/installation/).
