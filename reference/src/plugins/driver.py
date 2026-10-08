@@ -62,6 +62,7 @@ class DriverPlaywright:
             if self._playwright is not None:
                 raise RuntimeError('O driver Playwright já foi inicializado.')
 
+            # Gerenciamento explícito: mantém o Playwright ativo após sair do método.
             self._playwright = await async_playwright().start()
             try:
                 launcher = self._get_browser_launcher()
@@ -109,6 +110,7 @@ class DriverPlaywright:
                 await self.browser.close()
         finally:
             try:
+                # Tenta encerrar o Playwright mesmo se o fechamento do browser falhar.
                 if self._playwright:
                     await self._playwright.stop()
             finally:

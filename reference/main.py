@@ -7,6 +7,7 @@ from src.services.processor_novo import executar_processamento
 
 async def main() -> None:
     inicio = datetime.now()
+    # Mede todo o ciclo, incluindo a abertura e o fechamento dos recursos.
     temporizador = perf_counter()
     print(f'Execução iniciada em: {inicio:%d/%m/%Y %H:%M:%S}')
 

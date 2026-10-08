@@ -47,6 +47,7 @@ def carregar_dados() -> list[DadosFormulario]:
             colunas = ', '.join(sorted(colunas_faltantes))
             raise ValueError(f'Colunas obrigatórias ausentes: {colunas}')
 
+        # Localiza pelo cabeçalho, sem depender da ordem das colunas na planilha.
         indice_por_coluna = {
             nome_coluna: headers.index(nome_coluna)
             for nome_coluna in COLUNAS_OBRIGATORIAS
@@ -83,6 +84,7 @@ def dividir_dados(
 
     for indice in range(quantidade_workers):
         inicio = indice * tamanho_base
+        # O último lote recebe também o resto da divisão (10 / 3 => 3, 3, 4).
         fim = (
             len(dados)
             if indice == quantidade_workers - 1
@@ -98,6 +100,7 @@ async def executar_worker(
     worker_id: int,
     dados: list[DadosFormulario],
 ) -> None:
+    # Cada worker isola sua sessão, mas compartilha o navegador do driver.
     context = await driver.novo_contexto()
 
     try:
@@ -107,6 +110,7 @@ async def executar_worker(
 
         for rodada, dados_rodada in enumerate(dados, start=1):
             for nome_campo in COLUNAS_OBRIGATORIAS:
+                # Evita IDs dinâmicos: busca o input irmão seguinte ao label.
                 campo = page.locator(
                     'label',
                     has_text=nome_campo,
@@ -118,6 +122,7 @@ async def executar_worker(
 
         print(f'Worker {worker_id}: processamento concluído.')
     finally:
+        # Uma falha encerra este worker; o restante do seu lote fica pendente.
         await context.close()
 
 
@@ -128,6 +133,8 @@ async def executar_processamento() -> None:
     await driver.iniciar_driver()
 
     try:
+        # O * passa uma coroutine por lote; gather as agenda concorrentemente.
+        # Sem return_exceptions=True, uma falha propaga antes dos demais terminarem.
         await asyncio.gather(
             *(
                 executar_worker(driver, worker_id, lote)
@@ -135,4 +142,5 @@ async def executar_processamento() -> None:
             )
         )
     finally:
+        # Fecha o navegador compartilhado, inclusive se ainda houver workers ativos.
         await driver.fechar_driver()

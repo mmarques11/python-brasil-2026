@@ -14,6 +14,7 @@ def run(playwright: Playwright) -> None:
     page.goto("https://rpachallenge.com/")
     page.get_by_role("button", name="Start").click()
 
+    # Na API síncrona, cada chamada termina antes de a próxima começar.
     while round_atual <= ROUND_MAX:
         page.locator("label", has_text="Email").locator("xpath=following-sibling::input").fill("mateus.dev@gmail.com")
         page.locator("label", has_text="Address").locator("xpath=following-sibling::input").fill("rua dos coqueiros, 555")
