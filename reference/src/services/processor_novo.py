@@ -9,7 +9,7 @@ from src.plugins.driver import DriverPlaywright
 WORKER_COUNT = 3
 ROUND_MAX = 10
 RPA_CHALLENGE_URL = 'https://rpachallenge.com/'
-DATA_FILE = Path(__file__).resolve().parents[2] / 'data' / 'dados.xlsx'
+DATA_FILE = Path(__file__).resolve().parents[2] / 'data' / 'dados_menores.xlsx'
 
 DadosFormulario: TypeAlias = dict[str, str]
 
